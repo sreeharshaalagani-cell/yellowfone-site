@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a demo — Yellowfone</title>
+<meta name="description" content="Tell us about your restaurant and we'll set up a personalized demo with your menu — usually within 48 hours.">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="contact">
+
+<div id="nav-mount"></div>
+
+<section class="page-hero">
+  <div class="blob blob-3"></div>
+  <div class="container">
+    <span class="ribbon"><span class="ribbon-dot"></span> 48-hour turnaround</span>
+    <h1>Hear it on<br><em>your</em> menu.</h1>
+    <p class="lede">
+      Fill in a few details and we'll set up a personalized Yellowfone demo with your real menu. You'll be able to call a test number and hear it for yourself — usually within 48 hours.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top: 0;">
+  <div class="container">
+
+    <div class="contact-grid">
+
+      <div class="contact-info">
+        <h3>What happens <em style="color: var(--coral); font-family: var(--serif); font-style: italic; font-weight: 400;">next</em>.</h3>
+        <p>You submit the form. A real human (named Alex) replies within a business day to schedule a 15-minute setup call. We get your menu loaded and a test number live, and you call in to hear it. Total time investment on your end: about 30 minutes across two days.</p>
+
+        <ul class="contact-meta">
+          <li>
+            <span class="lbl">Sales</span>
+            <a href="mailto:hello@yellowfone.com">hello@yellowfone.com</a>
+          </li>
+          <li>
+            <span class="lbl">Phone</span>
+            <a href="tel:+15125550143">(512) 555-0143</a>
+          </li>
+          <li>
+            <span class="lbl">Hours</span>
+            Monday–Friday, 9am–6pm CT
+          </li>
+          <li>
+            <span class="lbl">Office</span>
+            Austin, TX
+          </li>
+        </ul>
+      </div>
+
+      <form class="form" onsubmit="handleSubmit(event)">
+        <div class="field-row">
+          <div class="field">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="field">
+            <label for="role">Role</label>
+            <input type="text" id="role" name="role" placeholder="Owner / GM / etc." required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="restaurant">Restaurant name</label>
+          <input type="text" id="restaurant" name="restaurant" required>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="locations">Locations</label>
+            <select id="locations" name="locations" required>
+              <option value="1">1 location</option>
+              <option value="2-5">2–5 locations</option>
+              <option value="6-10">6–10 locations</option>
+              <option value="11+">11+ locations</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pos">Current POS</label>
+            <select id="pos" name="pos" required>
+              <option value="">Select one</option>
+              <option>Toast</option>
+              <option>Square</option>
+              <option>Clover</option>
+              <option>Revel</option>
+              <option>Lightspeed</option>
+              <option>Other</option>
+              <option>None / paper</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="pain">What's the biggest phone-related pain right now?</label>
+          <textarea id="pain" name="pain" placeholder="e.g. We miss too many calls during the dinner rush, especially Fridays." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-arrow" style="width: 100%; justify-content: center;">Send · we reply within a business day</button>
+
+        <p style="font-size: 12px; opacity: 0.6; margin-top: 16px; text-align: center;">
+          By submitting, you agree to our <a href="#" style="text-decoration: underline;">privacy policy</a>. We never share your info.
+        </p>
+      </form>
+
+    </div>
+
+  </div>
+</section>
+
+<div id="footer-mount"></div>
+<script src="js/site.js"></script>
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    form.innerHTML = `
+      <div style="text-align: center; padding: 60px 20px;">
+        <div style="font-family: var(--display); font-size: 80px; margin-bottom: 24px; color: var(--coral); font-weight: 800; line-height: 1;">✓</div>
+        <h3 style="margin-bottom: 16px; font-size: 36px; font-weight: 800; letter-spacing: -0.03em;">Got it. <em style="font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--coral);">Thank you.</em></h3>
+        <p style="max-width: 36ch; margin: 0 auto;">Alex will be in touch within one business day to schedule your setup call. Keep an eye on your inbox.</p>
+      </div>
+    `;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources — Yellowfone</title>
+<meta name="description" content="Field notes, deployment guides, and product updates for restaurants running Yellowfone.">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="resources">
+
+<div id="nav-mount"></div>
+
+<section class="page-hero">
+  <div class="blob blob-2"></div>
+  <div class="container">
+    <span class="ribbon"><span class="ribbon-dot"></span> Coming soon</span>
+    <h1>Field notes from the<br><em>front of house</em>.</h1>
+    <p class="lede">
+      Operator playbooks, deployment guides, and lessons we've picked up watching thousands of real phone calls go through. We're publishing here soon.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top: 0;">
+  <div class="container">
+
+    <div class="res-grid">
+
+      <article class="res-card">
+        <span class="res-tag">Operator playbook</span>
+        <h3>Writing upsell rules that don't feel pushy</h3>
+        <p>A worked example from a 4-location pizzeria — which combos to push, when to back off, and the script tweaks that lifted average ticket 22%.</p>
+      </article>
+
+      <article class="res-card">
+        <span class="res-tag">Deployment guide</span>
+        <h3>Forwarding your Toast number to Yellowfone</h3>
+        <p>Step-by-step walkthrough for major US carriers — AT&amp;T, Verizon, T-Mobile, RingCentral, and what to do if your number is on a legacy provider.</p>
+      </article>
+
+      <article class="res-card">
+        <span class="res-tag">Analysis</span>
+        <h3>The economics of a missed phone call</h3>
+        <p>We pulled call data across 200+ restaurants. Here's what every dropped call actually costs, broken down by cuisine, time of day, and ticket size.</p>
+      </article>
+
+      <article class="res-card">
+        <span class="res-tag">Docs</span>
+        <h3>Allergen handling: the conservative approach</h3>
+        <p>How Yellowfone is configured to handle allergen questions, why it errs on the side of caution, and how to set up your menu so it has the best information.</p>
+      </article>
+
+      <article class="res-card">
+        <span class="res-tag">Integration</span>
+        <h3>Building a custom POS integration with webhooks</h3>
+        <p>For owners on a non-standard POS or homegrown system — how the order push payload works and how to wire it in.</p>
+      </article>
+
+      <article class="res-card">
+        <span class="res-tag">Changelog</span>
+        <h3>Product updates &amp; what's shipping next</h3>
+        <p>Reservations integration, Spanish-first deployments, and the new "regulars" feature that recognizes returning callers — coming this quarter.</p>
+      </article>
+
+    </div>
+
+    <!-- Newsletter -->
+    <div style="margin-top: 80px; padding: 60px; background: var(--ink); color: var(--cream); border: 3px solid var(--ink); border-radius: 24px; text-align: center; box-shadow: var(--shadow-lg); position: relative; overflow: hidden;">
+      <div style="position: absolute; top: -60px; right: -40px; width: 200px; height: 200px; background: var(--coral); border-radius: 50%; opacity: 0.6;"></div>
+      <div style="position: absolute; bottom: -80px; left: -40px; width: 180px; height: 180px; background: var(--yellow); border-radius: 50%; opacity: 0.5;"></div>
+
+      <div style="position: relative; z-index: 1;">
+        <span class="section-tag">Get notified</span>
+        <h2 style="margin: 16px auto 16px; max-width: 22ch; font-size: clamp(36px, 5vw, 60px);">First post lands <em style="color: var(--yellow);">soon</em>.</h2>
+        <p class="lede" style="margin: 0 auto 32px; opacity: 0.85;">Drop your email and we'll send the first piece the day it goes live. No newsletter, no spam — just the article.</p>
+        <form style="display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center;" onsubmit="event.preventDefault(); this.querySelector('button').textContent='✓ Got it';">
+          <input type="email" placeholder="you@restaurant.com" required style="padding: 14px 18px; background: var(--cream); border: 3px solid var(--cream); border-radius: 100px; color: var(--ink); font-family: var(--display); font-size: 16px; font-weight: 500; min-width: 280px; box-shadow: 4px 4px 0 var(--coral);">
+          <button type="submit" class="btn btn-yellow">Notify me</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div id="footer-mount"></div>
+<script src="js/site.js"></script>
+</body>
+</html>

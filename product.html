@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product — Yellowfone</title>
+<meta name="description" content="Seven things Yellowfone does on every call: takes orders, upsells, answers questions, handles allergens, routes calls, speaks any language, syncs to your POS.">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="product">
+
+<div id="nav-mount"></div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="blob blob-1"></div>
+  <div class="container">
+    <span class="ribbon"><span class="ribbon-dot"></span> Capabilities · 07 of them</span>
+    <h1>Everything a great host does.<br><em>Without the schedule.</em></h1>
+    <p class="lede">
+      Yellowfone isn't a tree of "press 1 for hours." It listens, understands, talks back, and gets the order right — every time. Here's exactly what it handles.
+    </p>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- 01 -->
+  <div class="cap-row">
+    <div class="cap-text">
+      <span class="cap-num">01 · front of house</span>
+      <h2>Takes orders <em>end-to-end</em>.</h2>
+      <p>Customers order the way they actually talk — "yeah gimme two of the spicy tofu, no peanuts, and a Thai iced tea." Yellowfone captures items, modifiers, special requests, and customer details, confirms the order back, and books it.</p>
+      <ul class="cap-list">
+        <li>Free-form speech, not menu trees</li>
+        <li>Modifiers, sides, allergies, special instructions</li>
+        <li>Reads phone numbers back digit-by-digit</li>
+        <li>Order pushes to Toast / Square / Clover automatically</li>
+      </ul>
+    </div>
+    <div class="cap-visual yellow">
+      <div class="bubble caller" style="margin-bottom: 12px;">
+        <div class="who">Caller</div>
+        I want a chicken biryani, medium spicy, and a garlic naan. For pickup.
+      </div>
+      <div class="bubble agent" style="margin-bottom: 12px;">
+        <div class="who">Aria</div>
+        Got it — chicken biryani medium and one garlic naan. Want a mango lassi or a soda with that?
+      </div>
+      <div class="bubble tool">↓ confirmed · pushed to Toast · ticket #4081</div>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="cap-row flip">
+    <div class="cap-visual pink">
+      <div class="rule-card">
+        <div class="rule-label">Upsell rule</div>
+        <strong>When pizza is ordered →</strong><br>
+        Suggest garlic knots ($4) <span style="color: var(--coral); font-weight: 700;">+ make it a combo with 2L for $4 more</span>
+      </div>
+      <div class="rule-card">
+        <div class="rule-label">Upsell rule</div>
+        <strong>When entrée &gt; $18 →</strong><br>
+        Suggest dessert: tiramisu or gelato
+      </div>
+      <div class="rule-card">
+        <div class="rule-label">Quiet hours</div>
+        <strong>Don't upsell after 9:30 PM</strong><br>
+        Last-call etiquette built in
+      </div>
+    </div>
+    <div class="cap-text">
+      <span class="cap-num">02 · revenue</span>
+      <h2>Upsells from <em>your</em> menu.</h2>
+      <p>The reason great servers make great money is they ask. Yellowfone asks too — combos, sides, drinks, dessert, "want to add a side of …" — but only the moves you tell it to make, only when they fit.</p>
+      <ul class="cap-list">
+        <li>Per-item upsell rules ("with pizza, suggest knots")</li>
+        <li>Combo offers ("make it a meal for $X more")</li>
+        <li>Quiet hours so it doesn't push at last call</li>
+        <li>Track upsell take-rate per item in the dashboard</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="cap-row">
+    <div class="cap-text">
+      <span class="cap-num">03 · always on</span>
+      <h2>Answers menu &amp; <em>hours questions</em>.</h2>
+      <p>Half of restaurant phone calls aren't orders — they're "are you open?" and "do you do gluten-free?" Yellowfone handles all of it from your real menu and hours, no scripts to maintain.</p>
+      <ul class="cap-list">
+        <li>Hours, address, parking, dine-in vs takeout, holidays</li>
+        <li>Item descriptions, prices, sizes, prep time</li>
+        <li>"What's popular?" / "What's new?" — answered from your data</li>
+        <li>Confidently says "I don't know — let me grab someone" when it should</li>
+      </ul>
+    </div>
+    <div class="cap-visual">
+      <div class="bubble caller" style="margin-bottom: 12px;">
+        <div class="who">Caller</div>
+        Are you guys open Christmas Eve?
+      </div>
+      <div class="bubble agent" style="margin-bottom: 12px;">
+        <div class="who">Aria</div>
+        We're open Christmas Eve from 11 AM to 4 PM, but closed Christmas Day. Want me to take an order for the 24th?
+      </div>
+      <div class="bubble caller" style="margin-bottom: 12px;">
+        <div class="who">Caller</div>
+        What's the spiciest thing on the menu?
+      </div>
+      <div class="bubble agent">
+        <div class="who">Aria</div>
+        That'd be the Andhra chicken — most heat. Guntur fish curry is a close second.
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="cap-row flip">
+    <div class="cap-visual teal">
+      <div class="bubble caller" style="margin-bottom: 12px;">
+        <div class="who">Caller</div>
+        Is the pad thai gluten-free? My kid has celiac.
+      </div>
+      <div class="bubble agent" style="margin-bottom: 12px;">
+        <div class="who">Aria</div>
+        The pad thai sauce contains soy sauce, which has gluten. The pad see ew without sauce, or the green curry with rice, would both be safe options. Want me to flag the order as celiac so the kitchen takes extra care?
+      </div>
+      <div class="bubble tool">↓ flag added: CELIAC · contamination protocol</div>
+    </div>
+    <div class="cap-text">
+      <span class="cap-num">04 · safety</span>
+      <h2>Handles <em>allergens</em> &amp; substitutions.</h2>
+      <p>Allergens are where wrong answers actually hurt people. Yellowfone is conservative — if there's any doubt, it says so. And it flags allergy orders for the kitchen so prep happens carefully.</p>
+      <ul class="cap-list">
+        <li>Per-item allergen tags (gluten, dairy, nuts, shellfish, soy, egg)</li>
+        <li>Suggests safe alternatives when an item is off-limits</li>
+        <li>Flags allergy orders on the kitchen ticket</li>
+        <li>Honest about uncertainty — won't bluff a celiac question</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="cap-row">
+    <div class="cap-text">
+      <span class="cap-num">05 · routing</span>
+      <h2>Routes the call to the <em>right person</em>.</h2>
+      <p>Some calls aren't for the bot. Catering for 200, complaints, vendors, the press — Yellowfone hands those off to the human you decide, with full context.</p>
+      <ul class="cap-list">
+        <li>Catering inquiries → catering manager's mobile</li>
+        <li>Complaints → owner, with the call summary in a text</li>
+        <li>Vendors / cold sales → dropped to voicemail</li>
+        <li>"Speak to a human" always works, no maze</li>
+      </ul>
+    </div>
+    <div class="cap-visual yellow">
+      <div class="rule-card">
+        <div class="rule-label">if</div>
+        <strong>order_size &gt; 25</strong><br>
+        <span style="color: var(--coral); font-weight: 700;">→ Priya · 555-0142</span>
+      </div>
+      <div class="rule-card">
+        <div class="rule-label">if</div>
+        <strong>caller intent = complaint</strong><br>
+        <span style="color: var(--coral); font-weight: 700;">→ Owner · text summary</span>
+      </div>
+      <div class="rule-card">
+        <div class="rule-label">if</div>
+        <strong>caller_says ≈ "manager"</strong><br>
+        <span style="color: var(--coral); font-weight: 700;">→ Front of house line</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 -->
+  <div class="cap-row flip">
+    <div class="cap-visual">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div style="padding: 18px; background: var(--yellow); border: 3px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--ink);">
+          <div style="font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px;">EN-US</div>
+          <div style="font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.2;">Hello, what can I get started for you?</div>
+        </div>
+        <div style="padding: 18px; background: var(--coral); color: var(--cream); border: 3px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--ink);">
+          <div style="font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px;">ES-MX</div>
+          <div style="font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.2;">¿Qué le puedo ofrecer hoy?</div>
+        </div>
+        <div style="padding: 18px; background: var(--pink); border: 3px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--ink);">
+          <div style="font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px;">FR-FR</div>
+          <div style="font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.2;">Que puis-je vous servir ?</div>
+        </div>
+        <div style="padding: 18px; background: var(--teal); color: var(--cream); border: 3px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--ink);">
+          <div style="font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px;">HI-IN</div>
+          <div style="font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.2;">आपके लिए क्या लाऊँ?</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap-text">
+      <span class="cap-num">06 · multilingual</span>
+      <h2>Speaks the <em>language</em> they speak.</h2>
+      <p>Yellowfone detects the caller's language on the first sentence and switches. Your menu and rules don't need translating — it does that on the fly.</p>
+      <ul class="cap-list">
+        <li>30+ languages out of the box</li>
+        <li>Auto-detects from the caller's first words</li>
+        <li>Locks to your default language if you prefer</li>
+        <li>Mid-call switching when callers code-switch</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 07 -->
+  <div class="cap-row">
+    <div class="cap-text">
+      <span class="cap-num">07 · sync</span>
+      <h2>SMS receipts. POS sync. <em>Done.</em></h2>
+      <p>The order doesn't end when the call ends. Yellowfone texts the customer a receipt with their order and ETA, and pushes the ticket to your POS so the kitchen sees it the same as any other order.</p>
+      <ul class="cap-list">
+        <li>SMS receipt with order details + ETA</li>
+        <li>Native push to Toast, Square, and Clover</li>
+        <li>Customer can text back "cancel" or "running late"</li>
+        <li>Daily order recap email to the owner</li>
+      </ul>
+    </div>
+    <div class="cap-visual pink">
+      <div style="background: var(--ink); border: 3px solid var(--ink); border-radius: 24px; padding: 18px; max-width: 320px; margin: 0 auto; box-shadow: 5px 5px 0 var(--coral);">
+        <div style="font-family: var(--mono); color: var(--cream); opacity: 0.6; font-size: 11px; margin-bottom: 14px; font-weight: 600;">SMS · +1 (512) 555-0143</div>
+        <div style="background: var(--yellow); color: var(--ink); padding: 14px 16px; border: 2px solid var(--ink); border-radius: 16px; border-bottom-left-radius: 4px; font-size: 14px; line-height: 1.5; font-weight: 500; box-shadow: 3px 3px 0 var(--coral);">
+          Thanks Sarah! Order #4081 confirmed.<br><br>
+          • 1× Chicken biryani (medium)<br>
+          • 1× Garlic naan<br><br>
+          Pickup in ~22 min · $24.18<br>
+          Reply CANCEL to cancel.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container cta-inner">
+    <h2>Want to hear it on <em>your menu</em>?</h2>
+    <p>Send us your menu and a phone number to forward. We'll have a working demo in your hands within 48 hours.</p>
+    <div class="cta-buttons">
+      <a href="contact.html" class="btn btn-primary btn-lg btn-arrow">Book a demo</a>
+      <a href="how-it-works.html" class="btn btn-ghost btn-lg">How it works</a>
+    </div>
+  </div>
+</section>
+
+<div id="footer-mount"></div>
+<script src="js/site.js"></script>
+</body>
+</html>
