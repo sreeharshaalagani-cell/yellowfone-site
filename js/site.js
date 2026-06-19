@@ -55,7 +55,8 @@ const FOOTER_HTML = `
           <li><a href="resources.html">Blog</a></li>
           <li><a href="#">Docs</a></li>
           <li><a href="#">Status</a></li>
-          <li><a href="#">Privacy</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms &amp; conditions</a></li>
         </ul>
       </div>
     </div>
