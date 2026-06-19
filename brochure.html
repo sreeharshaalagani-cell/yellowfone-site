@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yellowfone — One-page sales brief</title>
+<meta name="description" content="One-page Yellowfone sales brochure for in-person conversations.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  /* =========================================================
+     BROCHURE — single-page, print-optimized layout
+     Reuses tokens/components from styles.css; only adds the
+     page frame and dense composition needed to fit Letter.
+     ========================================================= */
+
+  /* Screen: show a "paper" centered on a neutral background */
+  body.brochure {
+    background: #e9e6dc;
+    padding: 32px 16px;
+  }
+  body.brochure::before { display: none; } /* hide global dot pattern under the page */
+
+  .sheet {
+    width: 8.5in;
+    height: 11in;
+    margin: 0 auto;
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    box-shadow: var(--shadow-lg);
+    padding: 0.35in 0.4in;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;   /* distribute extra space between sections evenly */
+    gap: 0;
+    /* re-introduce the dot pattern, scoped to the sheet */
+    background-image: radial-gradient(circle, rgba(15,15,15,0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-color: var(--cream);
+  }
+  .sheet > * { flex: 0 0 auto; }
+  /* Wrapper to keep section tag + grid glued together */
+  .br-block { display: block; }
+  .sheet .blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .sheet .blob-tr { width: 260px; height: 260px; background: var(--pink); top: -90px; right: -90px; opacity: 0.5; filter: blur(2px); }
+  .sheet .blob-bl { width: 220px; height: 220px; background: var(--teal); bottom: -100px; left: -80px; opacity: 0.35; filter: blur(2px); }
+
+  .sheet > * { position: relative; z-index: 1; }
+
+  /* Print/save bar — screen only */
+  .print-bar {
+    max-width: 8.5in;
+    margin: 0 auto 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .print-bar a { text-decoration: underline; text-underline-offset: 4px; }
+  .print-bar .btn { padding: 10px 18px; font-size: 14px; }
+
+  /* Header */
+  .br-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 6px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  .br-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .br-brand .brand-mark {
+    width: 28px; height: 28px;
+    background: var(--ink);
+    border-radius: 50%;
+    color: var(--yellow);
+    display: inline-grid;
+    place-items: center;
+    font-size: 14px;
+  }
+  .br-head .meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: right;
+    line-height: 1.4;
+  }
+  .br-head .meta .tag {
+    display: inline-block;
+    background: var(--coral);
+    color: var(--cream);
+    border: 2px solid var(--ink);
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 6px;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+  /* Hero */
+  .br-hero {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  .br-hero h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    font-size: 38px;
+    margin-bottom: 6px;
+  }
+  .br-hero h1 em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--coral);
+    display: inline-block;
+    transform: rotate(-2deg);
+    padding: 0 4px;
+  }
+  .br-hero h1 .underlined {
+    background: var(--yellow);
+    padding: 0 8px;
+    border: 3px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    display: inline-block;
+    transform: rotate(-1deg);
+  }
+  .br-hero .lede {
+    font-family: var(--display);
+    font-size: 13px;
+    line-height: 1.45;
+    max-width: 46ch;
+  }
+  .br-hero .lede strong { font-weight: 700; }
+
+  /* Stat cluster on the right */
+  .br-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .br-stat {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 7px 11px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .br-stat:nth-child(1) { background: var(--yellow); transform: rotate(-1deg); }
+  .br-stat:nth-child(2) { background: var(--coral); color: var(--cream); transform: rotate(0.8deg); margin-left: 14px; }
+  .br-stat:nth-child(3) { background: var(--pink); transform: rotate(-0.6deg); }
+  .br-stat .num {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .br-stat:nth-child(2) .num { color: var(--cream); }
+  .br-stat .lbl {
+    font-size: 10.5px;
+    font-weight: 500;
+    margin-top: 3px;
+    line-height: 1.25;
+  }
+
+  /* Section labels */
+  .br-section-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--cream);
+    color: var(--ink);
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
+    margin-bottom: 6px;
+  }
+
+  /* Features */
+  .br-feats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 0;
+  }
+  .br-feat {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 8px 11px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .br-feat.yellow { background: var(--yellow); }
+  .br-feat.teal { background: var(--teal); color: var(--cream); }
+  .br-feat.pink { background: var(--pink); }
+  .br-feat .num {
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .br-feat .num em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .br-feat h3 {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .br-feat p {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  /* Pricing strip */
+  .br-pricing {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 0;
+  }
+  .br-tier {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 8px 11px;
+    box-shadow: 3px 3px 0 var(--ink);
+    position: relative;
+  }
+  .br-tier.featured {
+    background: var(--yellow);
+    transform: rotate(-0.8deg);
+  }
+  .br-tier .name {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+  .br-tier .price {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .br-tier .price em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--coral);
+    margin-left: 4px;
+  }
+  .br-tier .period {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 3px;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+  .br-tier ul { list-style: none; padding: 0; margin: 0; }
+  .br-tier li {
+    font-size: 10.5px;
+    line-height: 1.35;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .br-tier li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 12px; height: 12px;
+    background: var(--coral);
+    color: var(--cream);
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 7px;
+    font-weight: 800;
+  }
+  .br-tier .badge {
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--coral);
+    color: var(--cream);
+    border: 2px solid var(--ink);
+    border-radius: 100px;
+    padding: 3px 8px;
+    box-shadow: 2px 2px 0 var(--ink);
+    transform: rotate(-3deg);
+  }
+
+  /* Quote + integrations row */
+  .br-row {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+  .br-quote {
+    background: var(--ink);
+    color: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 8px 12px;
+    box-shadow: 3px 3px 0 var(--coral);
+    position: relative;
+  }
+  .br-quote .qmark {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--yellow);
+    font-size: 30px;
+    line-height: 0.6;
+    margin-bottom: 2px;
+  }
+  .br-quote blockquote {
+    font-family: var(--display);
+    font-size: 12.5px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .br-quote blockquote em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--yellow);
+  }
+  .br-quote .by {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--yellow);
+  }
+  .br-integrations {
+    background: var(--teal);
+    color: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 8px 12px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .br-integrations h4 {
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .br-integrations h4 em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--yellow);
+  }
+  .br-integrations ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 10px;
+  }
+  .br-integrations li {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+  .br-integrations li::before {
+    content: '·';
+    color: var(--yellow);
+    margin-right: 6px;
+    font-weight: 800;
+  }
+
+  /* Footer CTA strip */
+  .br-foot {
+    background: var(--yellow);
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 10px 16px;
+    box-shadow: 3px 3px 0 var(--ink);
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 14px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .br-foot h3 {
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .br-foot h3 em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--coral);
+  }
+  .br-foot p {
+    font-size: 11px;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+  .br-contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .br-contact li {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+  }
+  .br-contact .lbl {
+    color: var(--coral);
+    margin-right: 6px;
+  }
+
+  /* The cap-style perks bar above footer */
+  .br-perks {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    margin-bottom: 0;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .br-perk {
+    background: var(--cream);
+    border: 2px solid var(--ink);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0 var(--ink);
+    white-space: nowrap;
+  }
+  .br-perk .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--coral);
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* =========================================================
+     PRINT
+     ========================================================= */
+  @page {
+    size: 8.5in 11in;
+    margin: 0;
+  }
+  @media print {
+    html, body.brochure {
+      background: var(--cream);
+      padding: 0;
+      margin: 0;
+      width: 8.5in;
+      height: 11in;
+    }
+    .print-bar { display: none !important; }
+    .sheet {
+      width: 8.5in;
+      height: auto;          /* let content determine height */
+      min-height: 11in;
+      max-height: 11in;
+      margin: 0;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      page-break-after: avoid;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      overflow: hidden;
+    }
+    /* preserve solid color backgrounds on print */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+
+  /* Tighter screen scaling on smaller viewports so the sheet still reads */
+  @media (max-width: 900px) {
+    .sheet { transform-origin: top center; }
+  }
+</style>
+</head>
+<body class="brochure">
+
+<div class="print-bar">
+  <a href="index.html">← yellowfone.com</a>
+  <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div class="sheet">
+  <div class="blob blob-tr"></div>
+  <div class="blob blob-bl"></div>
+
+  <!-- Header -->
+  <header class="br-head">
+    <div class="br-brand">
+      <span class="brand-mark">☎</span>
+      Yellowfone
+    </div>
+    <div class="meta">
+      <span class="tag">One-page sales brief</span><br>
+      yellowfone.com · info@kypertech.com
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="br-hero">
+    <div>
+      <h1>
+        Pick up <em>every</em> dang<br>
+        <span class="underlined">phone call</span>.
+      </h1>
+      <p class="lede">
+        Yellowfone is the AI voice agent that answers like your best host on a good night —
+        takes the order, <strong>upsells the combo</strong>, and shoots it straight to your POS.
+        Even at 7:14pm on a Friday.
+      </p>
+    </div>
+    <div class="br-stats">
+      <div class="br-stat">
+        <div class="num">38%</div>
+        <div class="lbl">of calls dropped during dinner rush</div>
+      </div>
+      <div class="br-stat">
+        <div class="num">$4.2k</div>
+        <div class="lbl">avg monthly revenue lost / location</div>
+      </div>
+      <div class="br-stat">
+        <div class="num">+22%</div>
+        <div class="lbl">average ticket size with upsells on</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <div class="br-block">
+    <span class="br-section-tag">What it does</span>
+    <div class="br-feats">
+      <div class="br-feat yellow">
+        <div class="num">01 <em>front of house</em></div>
+        <h3>Takes orders end-to-end</h3>
+        <p>Captures items + modifiers, confirms back, and pushes the ticket straight to your POS. Zero phone trees.</p>
+      </div>
+      <div class="br-feat teal">
+        <div class="num">02 <em>revenue</em></div>
+        <h3>Upsells like a good server</h3>
+        <p>Suggests combos, sides, drinks — only the moves you tell it to make, only when they fit.</p>
+      </div>
+      <div class="br-feat pink">
+        <div class="num">03 <em>always on</em></div>
+        <h3>Answers while you cook</h3>
+        <p>Hours, allergens, "is the curry vegan," what's good tonight. The kitchen stays focused.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="br-block">
+    <span class="br-section-tag">Pricing — per location, per month</span>
+    <div class="br-pricing">
+    <div class="br-tier">
+      <div class="name">Single location</div>
+      <div class="price">$599<em>/mo</em></div>
+      <div class="period">Billed monthly · cancel anytime</div>
+      <ul>
+        <li>Up to 1,200 calls / month</li>
+        <li>POS sync · SMS receipts</li>
+        <li>30+ languages</li>
+      </ul>
+    </div>
+    <div class="br-tier featured">
+      <span class="badge">Most popular</span>
+      <div class="name">Multi-location</div>
+      <div class="price">$499<em>/mo · per loc</em></div>
+      <div class="period">2-loc minimum · monthly</div>
+      <ul>
+        <li>Per-location numbers</li>
+        <li>Central dashboard</li>
+        <li>Custom voice + persona</li>
+      </ul>
+    </div>
+    <div class="br-tier">
+      <div class="name">Enterprise</div>
+      <div class="price">Custom</div>
+      <div class="period">11+ locations · annual</div>
+      <ul>
+        <li>SSO + RBAC · SOC 2</li>
+        <li>Custom POS + SLAs</li>
+        <li>API + webhooks</li>
+      </ul>
+    </div>
+    </div>
+  </div>
+
+  <!-- Quote + Integrations -->
+  <div class="br-row">
+    <div class="br-quote">
+      <div class="qmark">"</div>
+      <blockquote>
+        We were leaving money on the table every Friday. Yellowfone catches the calls we can't,
+        and the average <em>ticket is bigger</em> because it actually upsells.
+        Paid for itself in week one.
+      </blockquote>
+      <div class="by">— Owner · 4-location pizzeria · Texas</div>
+    </div>
+    <div class="br-integrations">
+      <h4>Plays nice <em>with</em></h4>
+      <ul>
+        <li>Toast</li>
+        <li>Square</li>
+        <li>Clover</li>
+        <li>Twilio</li>
+        <li>Revel <span style="opacity:.6">(beta)</span></li>
+        <li>Lightspeed <span style="opacity:.6">(beta)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Perks chips -->
+  <div class="br-perks">
+    <span class="br-perk"><span class="dot"></span>14-day free trial</span>
+    <span class="br-perk"><span class="dot"></span>Live in 48 hours</span>
+    <span class="br-perk"><span class="dot"></span>No per-minute fees</span>
+    <span class="br-perk"><span class="dot"></span>Month-to-month</span>
+    <span class="br-perk"><span class="dot"></span>Accuracy guarantee</span>
+  </div>
+
+  <!-- Foot CTA -->
+  <div class="br-foot">
+    <div>
+      <h3>Stop missing the <em>dinner rush</em>.</h3>
+      <p>Fifteen minutes on a call. We'll show Yellowfone live, with your menu, on your number.</p>
+    </div>
+    <ul class="br-contact">
+      <li><span class="lbl">Web</span>yellowfone.com</li>
+      <li><span class="lbl">Email</span>info@kypertech.com</li>
+      <li><span class="lbl">Demo</span>yellowfone.com/contact</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  /* Auto-fit the sheet contents to exactly one Letter page.
+     Measures the natural content height and, if it would overflow,
+     applies a CSS scale so nothing is clipped and nothing spills
+     onto a second page. */
+  (function () {
+    const sheet = document.querySelector('.sheet');
+    if (!sheet) return;
+
+    function fit() {
+      // Reset any prior scaling so we can measure the natural size
+      sheet.style.transform = '';
+      sheet.style.transformOrigin = 'top left';
+      sheet.style.height = 'auto';
+      sheet.style.minHeight = '0';
+      sheet.style.maxHeight = 'none';
+      sheet.style.overflow = 'visible';
+
+      // Force a reflow before measurement
+      const naturalHeight = sheet.scrollHeight;
+      const targetHeight = 11 * 96; // 11in × 96 CSS px
+
+      const scale = naturalHeight > targetHeight ? targetHeight / naturalHeight : 1;
+
+      // Re-apply page-fit constraints
+      sheet.style.height = '11in';
+      sheet.style.minHeight = '11in';
+      sheet.style.maxHeight = '11in';
+      sheet.style.overflow = 'hidden';
+
+      if (scale < 1) {
+        // Scale the inner content so it fits without clipping.
+        // We wrap children in a transform-only wrapper if not already wrapped.
+        let inner = sheet.querySelector(':scope > .sheet-inner');
+        if (!inner) {
+          inner = document.createElement('div');
+          inner.className = 'sheet-inner';
+          inner.style.display = 'flex';
+          inner.style.flexDirection = 'column';
+          inner.style.width = '100%';
+          inner.style.height = '100%';
+          inner.style.transformOrigin = 'top left';
+          // Move all sheet children into inner
+          while (sheet.firstChild) inner.appendChild(sheet.firstChild);
+          sheet.appendChild(inner);
+        }
+        inner.style.transform = `scale(${scale})`;
+        inner.style.width = `${100 / scale}%`;
+        inner.style.height = `${(11 * 96) / scale}px`;
+      }
+    }
+
+    // Run on load and before printing
+    window.addEventListener('load', fit);
+    window.addEventListener('beforeprint', fit);
+    window.addEventListener('resize', fit);
+  })();
+</script>
+
+</body>
+</html>
