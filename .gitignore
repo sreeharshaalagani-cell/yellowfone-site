@@ -3,3 +3,6 @@ Thumbs.db
 *.swp
 .vscode/
 .idea/
+
+# Local brochure PDF exports — generate from brochure.html via Print → Save as PDF
+brochure*.pdf
