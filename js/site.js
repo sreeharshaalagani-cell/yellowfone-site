@@ -53,6 +53,7 @@ const FOOTER_HTML = `
         <h5>Resources</h5>
         <ul>
           <li><a href="resources.html">Blog</a></li>
+          <li><a href="brochure.html">Sales brochure</a></li>
           <li><a href="#">Docs</a></li>
           <li><a href="#">Status</a></li>
           <li><a href="privacy.html">Privacy policy</a></li>
