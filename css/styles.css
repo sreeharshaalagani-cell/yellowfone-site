@@ -582,6 +582,63 @@ p { font-size: 18px; line-height: 1.5; }
 /* =========================================================
    PRICING TIERS
    ========================================================= */
+
+/* Monthly / annual billing toggle */
+.billing-toggle-wrap {
+  text-align: center;
+  margin: 20px 0 32px;
+}
+.billing-toggle {
+  display: inline-flex;
+  align-items: center;
+  border: 3px solid var(--ink);
+  border-radius: 100px;
+  background: var(--cream);
+  padding: 4px;
+  box-shadow: 4px 4px 0 var(--ink);
+  gap: 4px;
+}
+.billing-toggle button {
+  border: 0;
+  background: transparent;
+  padding: 10px 22px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 100px;
+  cursor: pointer;
+  color: var(--ink);
+  transition: background 0.15s, color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.01em;
+}
+.billing-toggle button:hover:not(.active) { background: rgba(15, 15, 15, 0.06); }
+.billing-toggle button.active {
+  background: var(--ink);
+  color: var(--yellow);
+}
+.save-badge {
+  background: var(--coral);
+  color: var(--cream);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  border: 2px solid var(--ink);
+}
+.billing-toggle button.active .save-badge { border-color: var(--yellow); }
+
+/* Price/period visibility driven by billing period on .pricing-container */
+.pricing-container.is-monthly .price-annual,
+.pricing-container.is-monthly .period-annual,
+.pricing-container.is-annual  .price-monthly,
+.pricing-container.is-annual  .period-monthly { display: none; }
+
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

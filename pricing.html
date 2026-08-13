@@ -25,61 +25,82 @@
 <section style="padding-top: 0;">
   <div class="container">
 
-    <div class="pricing-grid">
+    <div class="billing-toggle-wrap">
+      <div class="billing-toggle" role="tablist" aria-label="Choose billing period">
+        <button type="button" data-billing="monthly" class="active" aria-selected="true">Monthly</button>
+        <button type="button" data-billing="annual" aria-selected="false">
+          Annual
+          <span class="save-badge">Save up to 43%</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="pricing-grid pricing-container is-monthly">
 
       <div class="tier">
-        <div class="tier-name">Single<br>location</div>
-        <div class="tier-tag">For one shop, one phone number.</div>
-        <div class="tier-price">$599<em>/mo</em></div>
-        <div class="tier-period">Billed monthly · cancel anytime</div>
+        <div class="tier-name">Voice</div>
+        <div class="tier-tag">24/7 AI phone answering for a single restaurant.</div>
+        <div class="tier-price">
+          <span class="price-monthly">$150<em>/mo</em></span>
+          <span class="price-annual">$85<em>/mo</em></span>
+        </div>
+        <div class="tier-period">
+          <span class="period-monthly">Billed monthly · cancel anytime</span>
+          <span class="period-annual">Billed annually · $1,020/yr</span>
+        </div>
         <ul class="tier-list">
-          <li>Up to 1,200 calls / month</li>
-          <li>1 phone number</li>
-          <li>POS sync (Toast, Square, Clover)</li>
-          <li>SMS receipts to customers</li>
-          <li>Upsell rules &amp; smart routing</li>
-          <li>30+ languages</li>
+          <li>24/7 AI phone answering</li>
+          <li>Humanlike voice agent</li>
+          <li>Hours &amp; FAQ answers</li>
+          <li>Automated call transfer</li>
+          <li>Advanced call analytics</li>
+          <li>Multilingual voice · 30+ languages</li>
           <li>Call recordings + transcripts</li>
-          <li>Email support</li>
         </ul>
-        <a href="contact.html" class="btn">Start a 14-day trial</a>
+        <a href="contact.html" class="btn">Get a free demo</a>
       </div>
 
       <div class="tier featured">
         <span class="tier-badge">Most popular</span>
-        <div class="tier-name">Multi-<br>location</div>
-        <div class="tier-tag">Two to ten locations under one brand.</div>
-        <div class="tier-price">$499<em>/mo · per loc</em></div>
-        <div class="tier-period">Billed monthly · 2-loc minimum</div>
+        <div class="tier-name">Pro</div>
+        <div class="tier-tag">Orders, reservations, and payments — end to end.</div>
+        <div class="tier-price">
+          <span class="price-monthly">$350<em>/mo</em></span>
+          <span class="price-annual">$220<em>/mo</em></span>
+        </div>
+        <div class="tier-period">
+          <span class="period-monthly">Billed monthly · cancel anytime</span>
+          <span class="period-annual">Billed annually · $2,640/yr</span>
+        </div>
         <ul class="tier-list">
-          <li>Up to 1,200 calls / month / location</li>
-          <li>Per-location numbers + central dashboard</li>
-          <li>Shared menu with location overrides</li>
-          <li>POS sync (Toast, Square, Clover)</li>
-          <li>SMS receipts to customers</li>
-          <li>Cross-location reporting</li>
-          <li>Custom voice + brand persona</li>
-          <li>Priority support · 4h response</li>
+          <li><strong>Everything in Voice, plus:</strong></li>
+          <li>Take phone orders end-to-end into your POS</li>
+          <li>Book, modify &amp; cancel reservations</li>
+          <li>POS integrations: Toast, Square, Clover, SkyTab (+ more)</li>
+          <li>OpenTable reservations</li>
+          <li>Intelligent upselling</li>
+          <li>Secure payment over the phone</li>
+          <li>SMS order confirmations &amp; receipts</li>
+          <li>White-glove onboarding</li>
         </ul>
-        <a href="contact.html" class="btn btn-primary btn-arrow">Talk to sales</a>
+        <a href="contact.html" class="btn btn-primary btn-arrow">Get a free demo</a>
       </div>
 
       <div class="tier">
         <div class="tier-name">Enterprise</div>
-        <div class="tier-tag">Chains, franchises, unusual stacks.</div>
+        <div class="tier-tag">Volume pricing for multi-unit groups &amp; franchises.</div>
         <div class="tier-price">Custom</div>
-        <div class="tier-period">Annual · volume discounts</div>
+        <div class="tier-period">Volume pricing · annual</div>
         <ul class="tier-list">
-          <li>Unlimited calls</li>
-          <li>11+ locations</li>
-          <li>Custom POS integrations</li>
-          <li>SSO + role-based access</li>
+          <li><strong>Everything in Pro, plus:</strong></li>
+          <li>Multi-location management</li>
+          <li>Custom integrations</li>
+          <li>Custom voice training</li>
           <li>Dedicated success manager</li>
-          <li>SOC 2 Type II reports</li>
-          <li>Custom SLAs</li>
-          <li>API access &amp; webhooks</li>
+          <li>Priority 24/7 support</li>
+          <li>Master service agreement</li>
         </ul>
-        <a href="contact.html" class="btn">Contact sales</a>
+        <a href="contact.html" class="btn">Talk to sales</a>
       </div>
 
     </div>
@@ -97,17 +118,17 @@
           <span class="faq-toggle">+</span>
         </div>
         <div class="faq-a">
-          No. The price you see is the price you pay. We absorb the telephony and AI costs up to your call cap. If you're consistently going over, we'll suggest moving up a tier — it's almost always cheaper than the alternative.
+          No. The price you see is the price you pay — no per-minute fees, no per-call fees. We absorb the telephony and AI costs so your bill is predictable, month after month.
         </div>
       </div>
 
       <div class="faq-item">
         <div class="faq-q">
-          <span>What if we go over the call cap?</span>
+          <span>What's the difference between monthly and annual billing?</span>
           <span class="faq-toggle">+</span>
         </div>
         <div class="faq-a">
-          Yellowfone keeps answering — calls don't drop. We'll let you know and either adjust your tier or work out an overage rate. We'd rather you not lose customers over a billing detail.
+          Same product either way. Monthly gives you the flexibility to cancel any time. Annual gets you up to 43% off — you're pre-paying for twelve months, and we hand back the discount. Most restaurants pick monthly for the first few months, then switch to annual once they see it pay for itself.
         </div>
       </div>
 
@@ -117,7 +138,7 @@
           <span class="faq-toggle">+</span>
         </div>
         <div class="faq-a">
-          Single and Multi-location are month-to-month. Cancel any time — your data exports cleanly, and the phone number routing reverts to your old setup. Enterprise plans typically run annually with custom terms.
+          Voice and Pro are month-to-month by default. Cancel any time — your data exports cleanly, and the phone number routing reverts to your old setup. Annual billing runs for the twelve months you pre-pay. Enterprise plans typically run annually with custom terms.
         </div>
       </div>
 
@@ -180,5 +201,26 @@
 
 <div id="footer-mount"></div>
 <script src="js/site.js"></script>
+<script>
+  /* Billing period toggle (monthly / annual) */
+  (function () {
+    const container = document.querySelector('.pricing-container');
+    const buttons = document.querySelectorAll('.billing-toggle button');
+    if (!container || !buttons.length) return;
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const billing = btn.dataset.billing;
+        buttons.forEach(b => {
+          const on = b === btn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        container.classList.toggle('is-monthly', billing === 'monthly');
+        container.classList.toggle('is-annual', billing === 'annual');
+      });
+    });
+  })();
+</script>
 </body>
 </html>
