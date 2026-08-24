@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Try it live — Yellowfone</title>
+<meta name="description" content="Call our demo restaurant from your browser and order out loud. Two minutes, no phone needed.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  /* Demo-only styles. Everything else comes from the shared system. */
+  .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  @media (max-width: 900px) { .demo-grid { grid-template-columns: 1fr; } }
+
+  .demo-stage {
+    border: 3px solid var(--line); background: var(--cream);
+    box-shadow: var(--shadow-lg); padding: 32px; position: relative;
+  }
+  .demo-status {
+    font-family: var(--mono); font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.12em; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ink); display: inline-block; }
+  .dot.live  { background: var(--teal); animation: pulse 1.4s ease-in-out infinite; }
+  .dot.error { background: var(--coral); }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+  @media (prefers-reduced-motion: reduce) { .dot.live { animation: none; } }
+
+  .demo-timer {
+    font-family: var(--display); font-size: 72px; font-weight: 800;
+    line-height: 1; letter-spacing: -0.04em; margin: 8px 0 4px;
+  }
+  .demo-timer.low { color: var(--coral); }
+  .demo-timer-note { font-family: var(--mono); font-size: 11px; color: #6b6659; margin-bottom: 24px; }
+
+  .demo-menu { border: 3px solid var(--line); background: #fff; box-shadow: var(--shadow); }
+  .demo-menu header {
+    padding: 18px 22px; border-bottom: 3px solid var(--line); background: var(--yellow);
+  }
+  .demo-menu h3 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+  .demo-menu .sub { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
+  .menu-scroll { max-height: 560px; overflow-y: auto; }
+  .menu-cat {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 14px 22px 6px; color: #6b6659;
+  }
+  .menu-item {
+    display: flex; justify-content: space-between; gap: 16px;
+    padding: 8px 22px; border-bottom: 1px solid rgba(15,15,15,0.08);
+  }
+  .menu-item .nm { font-weight: 600; }
+  .menu-item .desc { font-size: 13px; color: #6b6659; margin-top: 2px; }
+  .menu-item .pr { font-family: var(--mono); font-size: 14px; white-space: nowrap; }
+  .tag {
+    display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
+    border: 1px solid var(--line); padding: 1px 5px; margin-left: 6px; vertical-align: 1px;
+  }
+  .tag.v { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .tag.s { background: var(--coral); color: #fff; border-color: var(--coral); }
+  .tag.a { background: var(--yellow); }
+
+  .demo-err {
+    border: 3px solid var(--coral); background: #fff1ee; padding: 14px 18px;
+    font-family: var(--mono); font-size: 13px; margin-bottom: 20px;
+  }
+  .demo-hint { font-family: var(--mono); font-size: 12px; color: #6b6659; line-height: 1.8; }
+  .demo-hint b { color: var(--ink); }
+</style>
+</head>
+<body data-page="demo">
+
+<div id="nav-mount"></div>
+
+<section class="page-hero">
+  <div class="blob blob-3"></div>
+  <div class="container">
+    <span class="ribbon"><span class="ribbon-dot"></span> No phone needed</span>
+    <h1>Order from<br><em>Saffron Lane</em>.</h1>
+    <p class="lede">
+      Saffron Lane is a restaurant we made up so you can hear Yellowfone answer without
+      bothering a real kitchen. Its menu is on the right — call in and order out loud,
+      the way your customers would.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top: 0;">
+  <div class="container">
+    <div class="demo-grid">
+
+      <!-- LEFT: gate, then the call -->
+      <div>
+        <div class="demo-stage">
+
+          <!-- Step 1 — the gate -->
+          <div id="gate">
+            <div class="demo-status"><span class="dot"></span> <span>Step 1 of 2 — who's calling?</span></div>
+            <h2 style="font-size: 30px; margin-bottom: 10px;">Tell us who you are.</h2>
+            <p style="margin-bottom: 24px;">
+              So we know who we spoke to, and so we can follow up if you'd like a version
+              running on your own menu.
+            </p>
+
+            <div id="gateError" class="demo-err" style="display:none;"></div>
+
+            <form class="form" id="gateForm" novalidate>
+              <div class="field-row">
+                <div class="field">
+                  <label for="dname">Your name</label>
+                  <input type="text" id="dname" name="name" autocomplete="name" required>
+                </div>
+                <div class="field">
+                  <label for="drestaurant">Restaurant</label>
+                  <input type="text" id="drestaurant" name="restaurant" autocomplete="organization" placeholder="Optional">
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="demail">Work email</label>
+                  <input type="email" id="demail" name="email" autocomplete="email" required>
+                </div>
+                <div class="field">
+                  <label for="dphone">Phone</label>
+                  <input type="tel" id="dphone" name="phone" autocomplete="tel" placeholder="512 555 0142" required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg btn-arrow" id="gateBtn" style="width:100%;">
+                Start the call
+              </button>
+              <p class="demo-hint" style="margin-top:16px;">
+                <b id="limitLine">Two minutes per call, three calls per person.</b><br>
+                We'll ask your browser for the microphone. Nothing is recorded to a kitchen —
+                Saffron Lane isn't real.
+              </p>
+            </form>
+          </div>
+
+          <!-- Step 2 — the call -->
+          <div id="stage" style="display:none;">
+            <div class="demo-status">
+              <span class="dot" id="stageDot"></span> <span id="stageLabel">Connecting…</span>
+            </div>
+            <div class="demo-timer" id="timer">2:00</div>
+            <div class="demo-timer-note">remaining · the call ends automatically</div>
+
+            <div id="callError" class="demo-err" style="display:none;"></div>
+
+            <button class="btn btn-lg" id="hangupBtn" style="width:100%;">Hang up</button>
+
+            <p class="demo-hint" style="margin-top:22px;">
+              <b>Try:</b> "Hi, can I get two chicken biryanis?"<br>
+              She'll ask how spicy — that question comes from the menu, not a script.<br>
+              Then try interrupting her mid-sentence.
+            </p>
+          </div>
+
+          <!-- Step 3 — afterwards -->
+          <div id="done" style="display:none;">
+            <div class="demo-status"><span class="dot"></span> <span>Call ended</span></div>
+            <h2 style="font-size: 30px; margin-bottom: 12px;">That's it — <em>on our menu</em>.</h2>
+            <p style="margin-bottom: 24px;" id="doneNote">
+              The interesting version runs on <em>yours</em>: your dishes, your prices,
+              your regulars' names.
+            </p>
+            <a href="contact.html" class="btn btn-primary btn-lg btn-arrow" style="width:100%;">Set it up on my menu</a>
+            <button class="btn" id="againBtn" style="width:100%; margin-top:12px;">Call again</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: the menu, on screen throughout -->
+      <div class="demo-menu">
+        <header>
+          <h3 id="menuName">Saffron Lane</h3>
+          <div class="sub">Demo menu · <span id="menuCount">—</span> dishes</div>
+        </header>
+        <div class="menu-scroll" id="menuList">
+          <div style="padding: 40px 22px; font-family: var(--mono); font-size: 12px; color:#6b6659;">
+            Loading the menu…
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div id="footer-mount"></div>
+
+<script>
+  // Local development: when this page is served from localhost, talk to
+  // a local backend instead of the production demo service. Production
+  // hostnames fall through to the default, so nothing to remember at
+  // deploy time.
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+    window.YELLOWFONE_DEMO_API = 'http://127.0.0.1:8140';
+  }
+</script>
+<script src="js/site.js"></script>
+<script type="module">
+import { DemoCall, fetchDemoConfig, requestDemoSession } from './js/demo.js';
+
+const $ = (id) => document.getElementById(id);
+const show = (id, on) => { $(id).style.display = on ? '' : 'none'; };
+const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+
+let cfg = null;
+let call = null;
+
+/* ---- menu on screen ---- */
+(async () => {
+  try {
+    cfg = await fetchDemoConfig();
+    $('menuName').textContent = cfg.restaurant;
+    $('menuCount').textContent = cfg.menu.reduce((n, c) => n + c.items.length, 0);
+    $('limitLine').textContent =
+      `${Math.round(cfg.secondsAllowed / 60)} minute${cfg.secondsAllowed >= 120 ? 's' : ''} per call, ${cfg.demosAllowed} calls per person.`;
+    $('timer').textContent = mmss(cfg.secondsAllowed);
+    $('menuList').innerHTML = cfg.menu.map((c) => `
+      <div class="menu-cat">${esc(c.name)}</div>
+      ${c.items.map((i) => `
+        <div class="menu-item">
+          <div>
+            <div class="nm">${esc(i.name)}${i.vegetarian ? '<span class="tag v">VEG</span>' : ''}${i.spicy ? '<span class="tag s">SPICY</span>' : ''}${i.asksSpice ? '<span class="tag a">PICK HEAT</span>' : ''}</div>
+            ${i.description ? `<div class="desc">${esc(i.description)}</div>` : ''}
+          </div>
+          <div class="pr">$${Number(i.price).toFixed(2)}</div>
+        </div>`).join('')}
+    `).join('');
+  } catch {
+    $('menuList').innerHTML =
+      '<div style="padding:40px 22px; font-family: var(--mono); font-size:12px;">The demo is offline right now. <a href="contact.html">Book a live one</a> instead.</div>';
+    $('gateBtn').disabled = true;
+  }
+})();
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+/* ---- gate ---- */
+$('gateForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('gateBtn');
+  const fields = {
+    name: $('dname').value.trim(),
+    email: $('demail').value.trim(),
+    phone: $('dphone').value.trim(),
+    restaurant: $('drestaurant').value.trim(),
+  };
+  if (!fields.name || !fields.email || !fields.phone) {
+    return gateError('Name, email and phone are all needed before we can start the call.');
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Starting…';
+  show('gateError', false);
+  try {
+    const session = await requestDemoSession(fields);
+    show('gate', false);
+    show('stage', true);
+    startCall(session);
+  } catch (err) {
+    // The server's message is written for a person — it explains the
+    // 3-call limit, a busy line, or a bad address. Show it as-is
+    // rather than replacing it with something vaguer.
+    gateError(err.message);
+    btn.disabled = false;
+    btn.textContent = 'Start the call';
+  }
+});
+
+function gateError(msg) {
+  $('gateError').textContent = msg;
+  show('gateError', true);
+}
+
+/* ---- the call ---- */
+function startCall(session) {
+  $('callError').style.display = 'none';
+  call = new DemoCall({
+    onState: (s) => {
+      const dot = $('stageDot'), label = $('stageLabel');
+      dot.className = 'dot' + (s === 'live' ? ' live' : s === 'error' ? ' error' : '');
+      label.textContent = {
+        connecting: 'Connecting…',
+        live: "You're on the line — start talking",
+        timeup: 'Time is up',
+        ended: 'Call ended',
+      }[s] || s;
+      if (s === 'timeup' || s === 'ended') endCall(s);
+    },
+    onError: (msg) => {
+      $('callError').textContent = msg;
+      show('callError', true);
+      $('stageDot').className = 'dot error';
+    },
+    onSeconds: (left) => {
+      $('timer').textContent = mmss(left);
+      $('timer').classList.toggle('low', left <= 30);
+    },
+  });
+  call.start(session.token, session.secondsAllowed || cfg?.secondsAllowed || 120);
+
+  const used = session.demosUsed, allowed = session.demosAllowed;
+  $('doneNote').innerHTML = used >= allowed
+    ? `That was your last of ${allowed} demo calls. The interesting version runs on <em>your</em> menu — your dishes, your prices, your regulars' names.`
+    : `You have ${allowed - used} of ${allowed} demo calls left. The interesting version runs on <em>your</em> menu — your dishes, your prices, your regulars' names.`;
+  $('againBtn').style.display = used >= allowed ? 'none' : '';
+}
+
+function endCall() {
+  setTimeout(() => { show('stage', false); show('done', true); }, 900);
+}
+
+$('hangupBtn').addEventListener('click', () => call?.stop('ended'));
+$('againBtn').addEventListener('click', () => {
+  show('done', false);
+  show('gate', true);
+  $('gateBtn').disabled = false;
+  $('gateBtn').textContent = 'Start the call';
+  $('timer').textContent = mmss(cfg?.secondsAllowed || 120);
+});
+
+// A tab closed mid-call must hang up, or the socket sits there holding
+// one of the few concurrent demo slots until the server's cap expires.
+window.addEventListener('beforeunload', () => call?.stop('ended'));
+</script>
+</body>
+</html>
