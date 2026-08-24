@@ -51,70 +51,42 @@
         </ul>
       </div>
 
-      <form class="form" onsubmit="handleSubmit(event)">
+      <form class="form" id="contactForm" novalidate>
+        <!-- Honeypot. The relay drops any submission that fills it; a
+             bot that completes every field it finds trips it, a person
+             never sees it. -->
         <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none !important;" aria-hidden="true">
+
+        <!-- Same four fields as the live demo's gate.
+             The form previously asked for seven REQUIRED answers —
+             name, role, restaurant, email, phone, POS and a free-text
+             question. "Current POS" defaulted to "Select one" with an
+             empty value, so missing it (easy, sitting between two text
+             boxes) meant the button did nothing but raise a small
+             native tooltip. On a lead form that reads as broken, and
+             every extra mandatory field costs submissions. -->
         <div class="field-row">
           <div class="field">
             <label for="name">Your name</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" autocomplete="name" required>
           </div>
           <div class="field">
-            <label for="role">Role</label>
-            <input type="text" id="role" name="role" placeholder="Owner / GM / etc." required>
+            <label for="restaurant">Restaurant</label>
+            <input type="text" id="restaurant" name="restaurant" autocomplete="organization" placeholder="Optional">
           </div>
         </div>
-
-        <div class="field">
-          <label for="restaurant">Restaurant name</label>
-          <input type="text" id="restaurant" name="restaurant" required>
-        </div>
-
         <div class="field-row">
           <div class="field">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
+            <label for="email">Work email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
           </div>
           <div class="field">
             <label for="phone">Phone</label>
-            <input type="tel" id="phone" name="phone" required>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="512 555 0142" required>
           </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label for="locations">Locations</label>
-            <select id="locations" name="locations" required>
-              <option value="1">1 location</option>
-              <option value="2-5">2–5 locations</option>
-              <option value="6-10">6–10 locations</option>
-              <option value="11+">11+ locations</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="pos">Current POS</label>
-            <select id="pos" name="pos" required>
-              <option value="">Select one</option>
-              <option>Toast</option>
-              <option>Square</option>
-              <option>Clover</option>
-              <option>Revel</option>
-              <option>Lightspeed</option>
-              <option>Other</option>
-              <option>None / paper</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="pain">What's the biggest phone-related pain right now?</label>
-          <textarea id="pain" name="pain" placeholder="e.g. We miss too many calls during the dinner rush, especially Fridays." required></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary btn-lg btn-arrow" style="width: 100%; justify-content: center;">Send · we reply within a business day</button>
-
-        <p style="font-size: 12px; opacity: 0.6; margin-top: 16px; text-align: center;">
-          By submitting, you agree to our <a href="#" style="text-decoration: underline;">privacy policy</a>. We never share your info.
-        </p>
       </form>
 
     </div>
@@ -148,11 +120,36 @@
   // dashboard alongside the live-demo leads.
   const API = window.YELLOWFONE_DEMO_API || 'https://demo.yellowfone.com';
 
+  document.getElementById('contactForm').addEventListener('submit', (e) => window.handleSubmit(e));
+
+  function showError(msg) {
+    const form = document.getElementById('contactForm');
+    let err = form.querySelector('.form-error');
+    if (!err) {
+      err = document.createElement('div');
+      err.className = 'form-error';
+      err.style.cssText = 'border:3px solid var(--coral); background:#fff1ee; padding:14px 18px; font-family:var(--mono); font-size:13px; margin-bottom:20px;';
+      form.prepend(err);
+    }
+    err.innerHTML = msg;
+    err.scrollIntoView({ block: 'nearest' });
+  }
+
   window.handleSubmit = async function (e) {
     e.preventDefault();
     const form = e.target;
     const btn = form.querySelector('button[type=submit], button');
     const data = Object.fromEntries(new FormData(form).entries());
+
+    // Visible, in-page validation. The browser's native tooltip is
+    // easy to miss on a long page, and a button that appears to do
+    // nothing is the worst possible failure on a lead form.
+    if (!data.name?.trim() || !data.email?.trim() || !data.phone?.trim()) {
+      return showError('Name, email and phone are all needed so we can get back to you.');
+    }
+    if (!/^[^\s@]+@[^\s@.]+\.[^\s@]{2,}$/.test(data.email.trim())) {
+      return showError('That email address does not look right — could you check it?');
+    }
 
     const prev = btn ? btn.textContent : '';
     if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
@@ -185,15 +182,8 @@
       // Never claim it was sent when it was not — that is the bug this
       // replaces. Give them a route that definitely works.
       if (btn) { btn.disabled = false; btn.textContent = prev; }
-      let err = form.querySelector('.form-error');
-      if (!err) {
-        err = document.createElement('div');
-        err.className = 'form-error';
-        err.style.cssText = 'border:3px solid var(--coral); background:#fff1ee; padding:14px 18px; font-family:var(--mono); font-size:13px; margin-bottom:20px;';
-        form.prepend(err);
-      }
-      err.innerHTML = (message || "We couldn't send that just now.")
-        + ' Please email <a href="mailto:info@kypertech.com">info@kypertech.com</a> and we\'ll pick it up.';
+      showError((message || "We couldn't send that just now.")
+        + ' Please email <a href="mailto:info@kypertech.com">info@kypertech.com</a> and we\'ll pick it up.');
       return;
     }
 
