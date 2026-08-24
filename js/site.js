@@ -15,7 +15,8 @@ const NAV_HTML = `
     </ul>
     <div class="top-cta">
       <a href="#" class="signin">Sign in</a>
-      <a href="contact.html" class="btn btn-primary btn-arrow">Book a demo</a>
+      <a href="contact.html" class="signin">Book a demo</a>
+      <a href="demo.html" class="btn btn-primary btn-arrow">Try it live</a>
     </div>
   </div>
 </nav>

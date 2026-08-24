@@ -122,19 +122,72 @@
 </section>
 
 <div id="footer-mount"></div>
-<script src="js/site.js"></script>
 <script>
-  function handleSubmit(e) {
+  // Local development: when this page is served from localhost, talk to
+  // a local backend instead of the production demo service. Production
+  // hostnames fall through to the default, so nothing to remember at
+  // deploy time.
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+    window.YELLOWFONE_DEMO_API = 'http://127.0.0.1:8140';
+  }
+</script>
+<script src="js/site.js"></script>
+<script type="module">
+  // This form used to call preventDefault() and swap in "Alex will be
+  // in touch" WITHOUT sending anything anywhere. Every enquiry since
+  // launch was shown a confirmation and dropped on the floor. It now
+  // posts to the demo service, which stores it and surfaces it in the
+  // dashboard alongside the live-demo leads.
+  const API = window.YELLOWFONE_DEMO_API || 'https://demo.yellowfone.com';
+
+  window.handleSubmit = async function (e) {
     e.preventDefault();
     const form = e.target;
+    const btn = form.querySelector('button[type=submit], button');
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    const prev = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+    let ok = false, message = '';
+    try {
+      const res = await fetch(API + '/api/demo/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const body = await res.json().catch(() => ({}));
+      ok = res.ok && body.ok;
+      message = body.message || '';
+    } catch {
+      ok = false;
+    }
+
+    if (!ok) {
+      // Never claim it was sent when it was not — that is the bug this
+      // replaces. Give them a route that definitely works.
+      if (btn) { btn.disabled = false; btn.textContent = prev; }
+      let err = form.querySelector('.form-error');
+      if (!err) {
+        err = document.createElement('div');
+        err.className = 'form-error';
+        err.style.cssText = 'border:3px solid var(--coral); background:#fff1ee; padding:14px 18px; font-family:var(--mono); font-size:13px; margin-bottom:20px;';
+        form.prepend(err);
+      }
+      err.innerHTML = (message || "We couldn't send that just now.")
+        + ' Please email <a href="mailto:info@kypertech.com">info@kypertech.com</a> and we\'ll pick it up.';
+      return;
+    }
+
     form.innerHTML = `
       <div style="text-align: center; padding: 60px 20px;">
         <div style="font-family: var(--display); font-size: 80px; margin-bottom: 24px; color: var(--coral); font-weight: 800; line-height: 1;">✓</div>
         <h3 style="margin-bottom: 16px; font-size: 36px; font-weight: 800; letter-spacing: -0.03em;">Got it. <em style="font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--coral);">Thank you.</em></h3>
         <p style="max-width: 36ch; margin: 0 auto;">Alex will be in touch within one business day to schedule your setup call. Keep an eye on your inbox.</p>
+        <p style="max-width: 36ch; margin: 24px auto 0;">In the meantime, you can <a href="demo.html">try it live right now</a> — takes two minutes.</p>
       </div>
     `;
-  }
+  };
 </script>
 </body>
 </html>
