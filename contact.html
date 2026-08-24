@@ -52,6 +52,7 @@
       </div>
 
       <form class="form" onsubmit="handleSubmit(event)">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none !important;" aria-hidden="true">
         <div class="field-row">
           <div class="field">
             <label for="name">Your name</label>
@@ -123,6 +124,11 @@
 
 <div id="footer-mount"></div>
 <script>
+  // Paste the Web3Forms access key here. Public by design — it only
+  // permits sending to the address it was issued for. Empty = email
+  // notification off; enquiries are still stored server-side.
+  window.YELLOWFONE_FORM_KEY = 'd386f2b1-535e-42a1-b6a8-068d1fd17e14';
+
   // Local development: when this page is served from localhost, talk to
   // a local backend instead of the production demo service. Production
   // hostnames fall through to the default, so nothing to remember at
@@ -133,6 +139,8 @@
 </script>
 <script src="js/site.js"></script>
 <script type="module">
+  import { notifyContact } from './js/notify.js';
+
   // This form used to call preventDefault() and swap in "Alex will be
   // in touch" WITHOUT sending anything anywhere. Every enquiry since
   // launch was shown a confirmation and dropped on the floor. It now
@@ -149,6 +157,10 @@
     const prev = btn ? btn.textContent : '';
     if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
 
+    // STORAGE IS THE RECORD. The backend write decides whether this
+    // submission succeeded; the email below is a convenience so nobody
+    // has to watch a dashboard. A failed notification must never make
+    // a stored enquiry look lost — that would have them submit twice.
     let ok = false, message = '';
     try {
       const res = await fetch(API + '/api/demo/contact', {
@@ -161,6 +173,12 @@
       message = body.message || '';
     } catch {
       ok = false;
+    }
+
+    if (ok) {
+      // Fire-and-forget: the visitor should not wait on a mail relay
+      // for a submission that has already been recorded.
+      notifyContact(data).catch(() => {});
     }
 
     if (!ok) {

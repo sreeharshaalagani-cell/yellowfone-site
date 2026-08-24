@@ -188,6 +188,9 @@
 <div id="footer-mount"></div>
 
 <script>
+  // See contact.html — public by design, empty disables notification.
+  window.YELLOWFONE_FORM_KEY = 'd386f2b1-535e-42a1-b6a8-068d1fd17e14';
+
   // Local development: when this page is served from localhost, talk to
   // a local backend instead of the production demo service. Production
   // hostnames fall through to the default, so nothing to remember at
@@ -199,6 +202,7 @@
 <script src="js/site.js"></script>
 <script type="module">
 import { DemoCall, fetchDemoConfig, requestDemoSession } from './js/demo.js';
+import { notifyDemoLead } from './js/notify.js';
 
 const $ = (id) => document.getElementById(id);
 const show = (id, on) => { $(id).style.display = on ? '' : 'none'; };
@@ -261,6 +265,11 @@ $('gateForm').addEventListener('submit', async (e) => {
     show('gate', false);
     show('stage', true);
     startCall(session);
+    // Only the first call from someone is worth an email — the second
+    // and third are the same person trying again, and three
+    // notifications for one lead trains you to ignore them. Fired
+    // after the call starts so nothing delays getting them on the line.
+    if (session.demosUsed === 1) notifyDemoLead(fields).catch(() => {});
   } catch (err) {
     // The server's message is written for a person — it explains the
     // 3-call limit, a busy line, or a bad address. Show it as-is
