@@ -59,6 +59,7 @@ const FOOTER_HTML = `
           <li><a href="#">Status</a></li>
           <li><a href="privacy.html">Privacy policy</a></li>
           <li><a href="terms.html">Terms &amp; conditions</a></li>
+          <li><a href="sms-policy.html">SMS policy</a></li>
         </ul>
       </div>
     </div>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMS Policy — Yellowfone</title>
+<meta name="description" content="How the Yellowfone phone-order receipt program works: verbal opt-in, one message per order, and how to stop.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .legal {
+    max-width: 760px;
+    margin: 0 auto;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+  .legal .meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 32px;
+  }
+  .legal h2 {
+    font-size: clamp(28px, 4vw, 44px);
+    margin: 56px 0 18px;
+    letter-spacing: -0.03em;
+    font-weight: 800;
+    line-height: 1.05;
+  }
+  .legal h2:first-of-type { margin-top: 0; }
+  .legal h2 em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--coral);
+  }
+  .legal h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 28px 0 10px;
+    letter-spacing: -0.02em;
+  }
+  .legal p { margin-bottom: 14px; }
+  .legal ul, .legal ol {
+    margin: 0 0 18px 0;
+    padding-left: 22px;
+  }
+  .legal li {
+    margin-bottom: 8px;
+    line-height: 1.55;
+  }
+  .legal a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+  }
+  .legal-toc {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: 22px 26px;
+    box-shadow: 4px 4px 0 var(--ink);
+    margin: 0 0 48px;
+  }
+  .legal-toc h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .legal-toc ol {
+    list-style: decimal;
+    padding-left: 22px;
+    margin: 0;
+  }
+  .legal-toc li { margin: 4px 0; font-weight: 500; font-size: 15px; }
+  .legal-toc a { text-decoration: none; }
+  .legal-toc a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+  .callout {
+    background: var(--yellow);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    padding: 26px 28px;
+    box-shadow: 6px 6px 0 var(--ink);
+    margin: 32px 0;
+  }
+  .callout .lbl {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--yellow);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 14px;
+  }
+  .callout h3 { margin: 0 0 12px; font-size: 24px; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* The spoken opt-in question, quoted as the caller hears it. */
+  .spoken {
+    border-left: 6px solid var(--coral);
+    background: var(--cream);
+    padding: 18px 22px;
+    margin: 20px 0 24px;
+    font-size: 19px;
+    line-height: 1.5;
+    font-family: var(--serif);
+    font-style: italic;
+  }
+
+  /* The receipt itself, shown as it arrives on a handset. */
+  .sms-sample {
+    margin: 24px 0 8px;
+    max-width: 420px;
+  }
+  .sms-sample .from {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin-bottom: 8px;
+  }
+  .sms-sample .bubble {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 20px 20px 20px 6px;
+    box-shadow: 5px 5px 0 var(--ink);
+    padding: 18px 20px;
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .sms-sample .caption {
+    font-size: 14px;
+    opacity: 0.75;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .sms-sample .var {
+    background: var(--yellow);
+    border-bottom: 2px solid var(--ink);
+    padding: 0 3px;
+    font-style: normal;
+  }
+
+  /* Keyword table — what to text, and what comes back. */
+  .kw-wrap { overflow-x: auto; margin: 22px 0 26px; }
+  table.kw {
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid var(--ink);
+    font-size: 15px;
+    min-width: 460px;
+  }
+  table.kw th, table.kw td {
+    border: 2px solid var(--ink);
+    padding: 12px 14px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.kw th {
+    background: var(--ink);
+    color: var(--yellow);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  table.kw td:first-child {
+    font-family: var(--mono);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body data-page="sms-policy">
+
+<div id="nav-mount"></div>
+
+<section class="page-hero">
+  <div class="blob blob-1"></div>
+  <div class="container">
+    <span class="ribbon"><span class="ribbon-dot"></span> One order. One receipt. That's it.</span>
+    <h1>SMS<br><em>policy</em>.</h1>
+    <p class="lede">
+      How the phone-order receipt program works — what you agreed to on the call, what arrives, and how to stop it.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top: 0; padding-bottom: 100px;">
+  <div class="container">
+    <div class="legal">
+
+      <p class="meta">Effective date: September 2, 2026 · Last updated: September 2, 2026</p>
+
+      <div class="legal-toc">
+        <h4>On this page</h4>
+        <ol>
+          <li><a href="#scope">What this program covers</a></li>
+          <li><a href="#optin">How you opt in</a></li>
+          <li><a href="#receive">What you receive</a></li>
+          <li><a href="#frequency">Message frequency</a></li>
+          <li><a href="#rates">Message and data rates</a></li>
+          <li><a href="#stop">How to stop</a></li>
+          <li><a href="#help">Getting help</a></li>
+          <li><a href="#carriers">Carriers</a></li>
+          <li><a href="#number">What we do with your number</a></li>
+          <li><a href="#contact">Contact us</a></li>
+        </ol>
+      </div>
+
+      <h2 id="scope">1. What this program <em>covers</em></h2>
+
+      <p>
+        Yellowfone answers the phone for restaurants. When you call a restaurant that
+        uses Yellowfone to place a takeout order, an automated assistant takes your
+        order on the restaurant's line.
+      </p>
+      <p>
+        This page covers one thing only: the <strong>receipt for that order</strong>. It is
+        the messaging program described in our carrier registration, and it is separate
+        from any other messaging Yellowfone operates. Nothing on this page describes
+        marketing, promotions, or a subscription, because this program sends none.
+      </p>
+      <p>
+        For how we handle your information generally, see our
+        <a href="privacy.html">Privacy Policy</a>. For the terms covering the service as a
+        whole, see our <a href="terms.html">Terms &amp; Conditions</a>.
+      </p>
+
+      <h2 id="optin">2. How you <em>opt in</em></h2>
+
+      <p>
+        Consent is given out loud, on a call you placed. There is no web form, no sign-up
+        box, and no keyword to text. The only way to join this program is to call a
+        restaurant and say yes.
+      </p>
+      <p>
+        After the assistant has read your full order back and you have confirmed it, it
+        asks a separate question — reading your number aloud digit by digit so you can
+        hear it and correct it before you answer:
+      </p>
+
+      <p class="spoken">
+        "Should I send the receipt to five-one-two… five-five-five… one-two-three-four,
+        the number you're calling from?"
+      </p>
+
+      <ul>
+        <li><strong>Saying yes</strong> is your consent, for that one number and that one receipt.</li>
+        <li><strong>Saying no</strong> means nothing is sent. Your order is still placed, and you can still pick it up as planned.</li>
+        <li><strong>A different number</strong> is fine — give it, and it is read back to you the same way before anything is sent.</li>
+        <li><strong>Consent does not carry over.</strong> Order again next week and you will be asked again.</li>
+      </ul>
+
+      <h2 id="receive">3. What you <em>receive</em></h2>
+
+      <p>
+        One text message, sent immediately after your order is placed. It looks like this:
+      </p>
+
+      <div class="sms-sample">
+        <p class="from">Sample message</p>
+        <div class="bubble">Thanks Alex! Your <span class="var">Restaurant Name</span> order is confirmed.
+Order #305 · Pickup in ~25 min
+
+• 1× Chicken Dum Biryani (hot)
+• 1× Garlic Naan
+
+Total: $20.48 (incl. tax)
+Questions? <span class="var">restaurant's phone</span>
+Reply STOP to opt out.</div>
+        <p class="caption">
+          The highlighted parts are filled in with the restaurant you actually ordered
+          from. The message is sent from a number registered to that restaurant.
+        </p>
+      </div>
+
+      <h2 id="frequency">4. Message <em>frequency</em></h2>
+
+      <div class="callout">
+        <span class="lbl">The whole policy, in one line</span>
+        <h3>One message per completed order.</h3>
+        <p>
+          Not one per item, not a reminder when it's ready, not a follow-up asking how it
+          was. If you place three orders in a month and agree each time, you get three
+          messages. If you never order again, you never hear from us again.
+        </p>
+      </div>
+
+      <h2 id="rates">5. Message and <em>data rates</em></h2>
+
+      <p>
+        Standard message and data rates may apply, depending on your mobile carrier and
+        plan. Yellowfone does not charge you for the receipt, and is not responsible for
+        charges your carrier applies.
+      </p>
+
+      <h2 id="stop">6. How to <em>stop</em></h2>
+
+      <p>
+        Reply <strong>STOP</strong> to any receipt. You will get one confirmation that you
+        have been unsubscribed, and then nothing further. Opting out applies to the
+        number you reply from.
+      </p>
+
+      <div class="kw-wrap">
+        <table class="kw">
+          <thead>
+            <tr><th>You text</th><th>What happens</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>STOP<br>UNSUBSCRIBE<br>CANCEL<br>END<br>QUIT</td>
+              <td>You are unsubscribed and receive one confirmation. No further messages are sent to that number.</td>
+            </tr>
+            <tr>
+              <td>START<br>UNSTOP</td>
+              <td>Resubscribes the number. You can also simply agree again on your next call.</td>
+            </tr>
+            <tr>
+              <td>HELP<br>INFO</td>
+              <td>Returns what this program is and how to reach a person.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Opting out of receipts does not affect your ability to order. You can still call
+        the restaurant and place an order exactly as before — you simply will not be
+        texted.
+      </p>
+
+      <h2 id="help">7. Getting <em>help</em></h2>
+
+      <p>
+        Reply <strong>HELP</strong> to any message, or email
+        <a href="mailto:info@kypertech.com">info@kypertech.com</a>.
+      </p>
+      <p>
+        For anything about the food itself — a wrong item, a missing item, a change to the
+        order, or when it will be ready — call the restaurant directly. Their number is on
+        every receipt. Yellowfone answers the phone; the restaurant makes the food.
+      </p>
+
+      <h2 id="carriers">8. <em>Carriers</em></h2>
+
+      <p>
+        Messaging is supported on major U.S. carriers, including AT&amp;T, T-Mobile,
+        Verizon, Boost, Cricket, MetroPCS, U.S. Cellular, and others. Carriers are not
+        liable for delayed or undelivered messages.
+      </p>
+
+      <h2 id="number">9. What we do with <em>your number</em></h2>
+
+      <p>
+        Your mobile number is used to deliver the receipt for the order you just placed.
+        That is the only thing this program uses it for.
+      </p>
+      <p>
+        Mobile phone numbers, SMS opt-in information, and consent data collected through
+        this program are <strong>not sold, rented, or shared with any third party</strong>
+        for marketing, promotion, or independent use. The only parties who see your number
+        are the restaurant fulfilling your order and the messaging provider that delivers
+        the text on our behalf.
+      </p>
+      <p>
+        Full detail on retention and your rights is in the
+        <a href="privacy.html">Privacy Policy</a>.
+      </p>
+
+      <h2 id="contact">10. <em>Contact</em> us</h2>
+
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:info@kypertech.com">info@kypertech.com</a></li>
+        <li><strong>Phone:</strong> <a href="tel:+15125938486">+1 (512) 593-8486</a></li>
+        <li><strong>Mail:</strong> Yellowfone, c/o Kyper Technologies</li>
+        <li><strong>Website:</strong> <a href="contact.html">yellowfone.com/contact</a></li>
+      </ul>
+
+    </div>
+  </div>
+</section>
+
+<div id="footer-mount"></div>
+<script src="js/site.js"></script>
+</body>
+</html>
